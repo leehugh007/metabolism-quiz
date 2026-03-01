@@ -11,6 +11,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 /* ===== Reset & Base ===== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -836,12 +837,53 @@ body {
   padding: 4px 8px;
   font-family: inherit;
 }
+/* ===== Mobile Font Size Adjustments ===== */
+@media (max-width: 480px) {
+  html { font-size: 17px; }
+  .intro h1 { font-size: 28px; }
+  .intro p { font-size: 17px; }
+  .pain-item { font-size: 15px; }
+  .question-text { font-size: 21px; }
+  .option-btn { font-size: 16px; }
+  .checkbox-btn { font-size: 15px; }
+  .result-type-name { font-size: 26px; }
+  .result-tagline { font-size: 17px; }
+  .result-desc { font-size: 16px; line-height: 2; }
+  .result-desc p { margin-bottom: 14px; }
+  .suggestions-title { font-size: 17px; }
+  .suggestion-item { font-size: 15px; }
+  .science-text { font-size: 15px; }
+  .cta-title { font-size: 16px; }
+  .cta-desc { font-size: 14px; }
+  .share-card-type { font-size: 24px; }
+  .share-card-tagline { font-size: 15px; }
+  .share-card-stat { font-size: 14px; }
+  .share-card-stat span { font-size: 22px; }
+  .share-hook { font-size: 18px; }
+  .share-sub { font-size: 15px; }
+  .share-btn { font-size: 15px; }
+  .science-page-title { font-size: 24px; }
+  .science-page-subtitle { font-size: 16px; }
+  .science-block-title { font-size: 18px; }
+  .science-block-text { font-size: 16px; }
+  .science-highlight { font-size: 16px; }
+  .science-cta-title { font-size: 22px; }
+  .science-cta-desc { font-size: 15px; }
+}
+
+/* Save image button */
+.share-btn-save {
+  background: #fff;
+  color: #3498db;
+  border: 2px solid #3498db;
+}
+.share-btn-save:active { background: #f0f9ff; }
 </style>
 </head>
 <body>
 <div id="root"></div>
 <script type="text/babel">
-const { useState, useCallback, useMemo, useEffect } = React;
+const { useState, useCallback, useMemo, useEffect, useRef } = React;
 
 // ===== HIGHLIGHT PARSER =====
 // ==text== → yellow highlight (key insight)
@@ -1734,6 +1776,28 @@ function ResultPage({ result, onRestart, onShowScience }) {
   const type = TYPES[result.primary];
   const secondaryType = result.secondary ? TYPES[result.secondary] : null;
   const isMixed = !!result.secondary;
+  const shareCardRef = useRef(null);
+  const [saving, setSaving] = useState(false);
+
+  const handleSaveCard = async () => {
+    if (!shareCardRef.current || saving) return;
+    setSaving(true);
+    try {
+      const canvas = await html2canvas(shareCardRef.current, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: null,
+        borderRadius: 20,
+      });
+      const link = document.createElement('a');
+      link.download = `代謝類型-${type.name}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    } catch (e) {
+      console.error('Save failed:', e);
+    }
+    setSaving(false);
+  };
 
   // Random description
   const desc = useMemo(() => {
@@ -1838,7 +1902,7 @@ function ResultPage({ result, onRestart, onShowScience }) {
       {/* Share Card & Retake */}
       <div className="share-section">
         {/* Visual Type Card */}
-        <div className="share-card" style={{ background: type.gradient, color: '#fff' }}>
+        <div ref={shareCardRef} className="share-card" style={{ background: type.gradient, color: '#fff' }}>
           <img className="share-card-img" src={type.image} alt={type.name} />
           <div className="share-card-type">
             {isMixed ? `${type.name} × ${secondaryType.name}` : type.name}
@@ -1865,6 +1929,11 @@ function ResultPage({ result, onRestart, onShowScience }) {
           </button>
           <button className="share-btn share-btn-copy" onClick={handleCopyLink}>
             📋 複製連結
+          </button>
+        </div>
+        <div className="share-buttons">
+          <button className="share-btn share-btn-save" onClick={handleSaveCard} disabled={saving}>
+            {saving ? '⏳ 存檔中...' : '💾 儲存圖片'}
           </button>
         </div>
 
