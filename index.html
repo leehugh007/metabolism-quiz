@@ -561,9 +561,14 @@ body {
   );
   pointer-events: none;
 }
-.share-card-emoji {
-  font-size: 48px;
-  margin-bottom: 8px;
+.share-card-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid rgba(255,255,255,0.5);
+  margin-bottom: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 .share-card-type {
   font-size: 22px;
@@ -1834,7 +1839,7 @@ function ResultPage({ result, onRestart, onShowScience }) {
       <div className="share-section">
         {/* Visual Type Card */}
         <div className="share-card" style={{ background: type.gradient, color: '#fff' }}>
-          <div className="share-card-emoji">{type.emoji}</div>
+          <img className="share-card-img" src={type.image} alt={type.name} />
           <div className="share-card-type">
             {isMixed ? `${type.name} × ${secondaryType.name}` : type.name}
           </div>
