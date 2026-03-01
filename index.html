@@ -1778,6 +1778,7 @@ function ResultPage({ result, onRestart, onShowScience }) {
   const isMixed = !!result.secondary;
   const shareCardRef = useRef(null);
   const [saving, setSaving] = useState(false);
+  const [cardImageUrl, setCardImageUrl] = useState(null);
 
   const handleSaveCard = async () => {
     if (!shareCardRef.current || saving) return;
@@ -1787,12 +1788,11 @@ function ResultPage({ result, onRestart, onShowScience }) {
         scale: 2,
         useCORS: true,
         backgroundColor: null,
-        borderRadius: 20,
       });
-      const link = document.createElement('a');
-      link.download = `代謝類型-${type.name}.png`;
-      link.href = canvas.toDataURL('image/png');
-      link.click();
+      const dataUrl = canvas.toDataURL('image/png');
+      // Mobile: show image inline for long-press save
+      // Desktop: also show inline (more reliable than <a download>)
+      setCardImageUrl(dataUrl);
     } catch (e) {
       console.error('Save failed:', e);
     }
@@ -1902,17 +1902,36 @@ function ResultPage({ result, onRestart, onShowScience }) {
       {/* Share Card & Retake */}
       <div className="share-section">
         {/* Visual Type Card */}
-        <div ref={shareCardRef} className="share-card" style={{ background: type.gradient, color: '#fff' }}>
-          <img className="share-card-img" src={type.image} alt={type.name} />
-          <div className="share-card-type">
-            {isMixed ? `${type.name} × ${secondaryType.name}` : type.name}
+        {cardImageUrl ? (
+          <div style={{ marginBottom: 20 }}>
+            <img
+              src={cardImageUrl}
+              alt={`${type.name} 代謝類型卡`}
+              style={{ width: '100%', borderRadius: 20, display: 'block' }}
+            />
+            <div style={{ fontSize: 13, color: '#636e72', marginTop: 10, lineHeight: 1.6 }}>
+              👆 長按圖片即可儲存到手機相簿
+            </div>
+            <button
+              style={{ marginTop: 10, background: 'none', border: 'none', color: '#3498db', fontSize: 14, cursor: 'pointer', fontFamily: 'inherit', textDecoration: 'underline' }}
+              onClick={() => setCardImageUrl(null)}
+            >
+              返回原始卡片
+            </button>
           </div>
-          <div className="share-card-tagline">{type.tagline}</div>
-          <div className="share-card-stat">
-            測驗者中只有 <span>{type.sharePercent}%</span> 是這個類型
+        ) : (
+          <div ref={shareCardRef} className="share-card" style={{ background: type.gradient, color: '#fff' }}>
+            <img className="share-card-img" src={type.image} alt={type.name} />
+            <div className="share-card-type">
+              {isMixed ? `${type.name} × ${secondaryType.name}` : type.name}
+            </div>
+            <div className="share-card-tagline">{type.tagline}</div>
+            <div className="share-card-stat">
+              測驗者中只有 <span>{type.sharePercent}%</span> 是這個類型
+            </div>
+            <div className="share-card-footer">🔥 你是哪種代謝類型？30 秒測出來</div>
           </div>
-          <div className="share-card-footer">🔥 你是哪種代謝類型？30 秒測出來</div>
-        </div>
+        )}
 
         {/* Share Hook */}
         <div className="share-hook">朋友測完都說：也太準了吧</div>
@@ -1931,11 +1950,13 @@ function ResultPage({ result, onRestart, onShowScience }) {
             📋 複製連結
           </button>
         </div>
-        <div className="share-buttons">
-          <button className="share-btn share-btn-save" onClick={handleSaveCard} disabled={saving}>
-            {saving ? '⏳ 存檔中...' : '💾 儲存圖片'}
-          </button>
-        </div>
+        {!cardImageUrl && (
+          <div className="share-buttons">
+            <button className="share-btn share-btn-save" onClick={handleSaveCard} disabled={saving}>
+              {saving ? '⏳ 存檔中...' : '💾 儲存圖片'}
+            </button>
+          </div>
+        )}
 
         <button className="retake-btn" onClick={onRestart}>
           🔄 再做一次測驗
