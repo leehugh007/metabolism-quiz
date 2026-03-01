@@ -35,12 +35,10 @@ body {
 
 /* ===== Intro Page ===== */
 .intro {
-  padding: 60px 24px 40px;
+  padding: 48px 24px 40px;
   text-align: center;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
 }
 .intro-badge {
   display: inline-block;
@@ -106,6 +104,92 @@ body {
   font-size: 12px;
   color: #b2bec3;
 }
+
+/* ===== Pain Points Section ===== */
+.pain-section {
+  text-align: left;
+  margin: 0 0 36px;
+  padding: 0;
+}
+.pain-header {
+  font-size: 17px;
+  font-weight: 700;
+  color: #2d3436;
+  text-align: center;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+.pain-header span {
+  color: #e74c3c;
+}
+.pain-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.pain-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 16px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #2d3436;
+  border-left: 3px solid #f1f2f6;
+  transition: all 0.3s ease;
+}
+.pain-item.highlighted {
+  border-left-color: #e74c3c;
+  background: #fff5f5;
+}
+.pain-check {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 2px solid #dfe6e9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  margin-top: 1px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.pain-item.highlighted .pain-check {
+  background: #e74c3c;
+  border-color: #e74c3c;
+  color: #fff;
+}
+.pain-count {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #e74c3c;
+  min-height: 24px;
+  transition: opacity 0.3s ease;
+}
+.pain-divider {
+  text-align: center;
+  margin: 28px 0 20px;
+  font-size: 13px;
+  color: #b2bec3;
+  position: relative;
+}
+.pain-divider::before,
+.pain-divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 30%;
+  height: 1px;
+  background: #e9ecef;
+}
+.pain-divider::before { left: 0; }
+.pain-divider::after { right: 0; }
 
 /* ===== Progress Bar ===== */
 .progress-wrap {
@@ -1203,18 +1287,73 @@ function calculateResult(answers) {
 
 // ===== COMPONENTS =====
 
+const PAIN_POINTS = [
+  { text: '下午三點一定要來杯手搖飲，不然撐不住', emoji: '🧋' },
+  { text: '明明吃很少，體重就是不動', emoji: '⚖️' },
+  { text: '忙了一整天，晚上只想癱著吃東西', emoji: '🛋️' },
+  { text: '肚子越來越大，其他地方還好', emoji: '😮‍💨' },
+  { text: '試過168、生酮、代餐⋯每次都復胖', emoji: '🔄' },
+  { text: '吃完午餐就想睡，下午腦袋像當機', emoji: '😴' },
+];
+
+const PAIN_MESSAGES = [
+  '',
+  '這可能不是意志力的問題⋯',
+  '你的身體可能在發出訊號',
+  '這些都跟「代謝」有關',
+  '你的代謝模式，決定了你的身體反應',
+  '測驗可以幫你找到答案',
+  '你不是不努力，是方法不對',
+];
+
 function IntroPage({ onStart }) {
+  const [checked, setChecked] = useState({});
+
+  const togglePain = (idx) => {
+    setChecked(prev => {
+      const next = { ...prev };
+      if (next[idx]) { delete next[idx]; } else { next[idx] = true; }
+      return next;
+    });
+  };
+
+  const checkedCount = Object.keys(checked).length;
+
   return (
     <div className="intro">
       <div className="intro-badge">30 秒快速測驗</div>
       <h1>
-        高轉速、省電模式、雲霄飛車<br/>
-        <span>你是哪種代謝類型？</span>
+        你不是不努力<br/>
+        <span>是代謝在扯你後腿</span>
       </h1>
       <p>
         10 個生活小問題<br/>
         測出你的身體正在用哪種模式運轉
       </p>
+
+      <div className="pain-section">
+        <div className="pain-header">
+          你是不是也<span>這樣</span>？
+        </div>
+        <div className="pain-list">
+          {PAIN_POINTS.map((item, idx) => (
+            <div
+              key={idx}
+              className={`pain-item ${checked[idx] ? 'highlighted' : ''}`}
+              onClick={() => togglePain(idx)}
+            >
+              <span className="pain-check">{checked[idx] ? '✓' : ''}</span>
+              <span>{item.emoji} {item.text}</span>
+            </div>
+          ))}
+        </div>
+        <div className="pain-count">
+          {checkedCount > 0 ? PAIN_MESSAGES[checkedCount] || PAIN_MESSAGES[PAIN_MESSAGES.length - 1] : '\u00A0'}
+        </div>
+      </div>
+
+      <div className="pain-divider">花 30 秒找出原因</div>
+
       <div className="intro-features">
         <div className="intro-feature">
           <div className="icon">⏱️</div>
@@ -1229,7 +1368,7 @@ function IntroPage({ onStart }) {
           <div>個人化建議</div>
         </div>
       </div>
-      <button className="start-btn" onClick={onStart}>開始測驗</button>
+      <button className="start-btn" onClick={onStart}>開始測驗 →</button>
       <div className="intro-footer">已有超過 10,000 人完成測驗</div>
     </div>
   );
