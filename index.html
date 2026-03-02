@@ -11,7 +11,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 /* ===== Reset & Base ===== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -332,6 +331,25 @@ body {
   border-color: #e74c3c;
   color: #fff;
 }
+.q7-none-option {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px dashed #dfe6e9;
+}
+.q7-none-option .checkbox-btn {
+  background: #fff;
+  border-color: #dfe6e9;
+  border-style: dashed;
+}
+.q7-none-option .checkbox-btn.selected {
+  border-color: #27ae60;
+  border-style: solid;
+  background: #f0fff4;
+}
+.q7-none-option .checkbox-btn.selected .checkbox-icon {
+  background: #27ae60;
+  border-color: #27ae60;
+}
 .q7-next-btn {
   display: block;
   width: 100%;
@@ -539,118 +557,38 @@ body {
 }
 
 /* Share */
-/* ===== Share Card Section ===== */
 .share-section {
   text-align: center;
-  padding: 32px 24px 40px;
+  padding: 28px 24px 40px;
   border-top: 1px solid #f1f2f6;
 }
-.share-card {
-  position: relative;
-  border-radius: 20px;
-  padding: 32px 24px 28px;
-  margin-bottom: 20px;
-  overflow: hidden;
-}
-.share-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  opacity: 0.08;
-  background: repeating-linear-gradient(
-    45deg, transparent, transparent 10px, currentColor 10px, currentColor 11px
-  );
-  pointer-events: none;
-}
-.share-card-img {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid rgba(255,255,255,0.5);
-  margin-bottom: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-.share-card-type {
-  font-size: 22px;
-  font-weight: 800;
-  margin-bottom: 6px;
-}
-.share-card-tagline {
-  font-size: 14px;
-  opacity: 0.85;
-  margin-bottom: 16px;
-  line-height: 1.5;
-}
-.share-card-stat {
-  display: inline-block;
-  background: rgba(255,255,255,0.25);
-  backdrop-filter: blur(4px);
-  border-radius: 20px;
-  padding: 6px 16px;
-  font-size: 13px;
-  font-weight: 600;
-}
-.share-card-stat span {
-  font-size: 20px;
-  font-weight: 800;
-}
-.share-card-footer {
-  margin-top: 14px;
-  font-size: 11px;
-  opacity: 0.6;
-  letter-spacing: 0.5px;
-}
-.share-hook {
-  font-size: 17px;
-  font-weight: 700;
-  color: #2d3436;
-  margin-bottom: 6px;
-}
-.share-sub {
-  font-size: 14px;
+.share-text {
+  font-size: 15px;
   color: #636e72;
-  margin-bottom: 20px;
-  line-height: 1.6;
+  margin-bottom: 12px;
 }
-.share-buttons {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-bottom: 16px;
-}
-.share-btn {
-  flex: 1;
-  max-width: 180px;
-  padding: 13px 8px;
-  font-size: 14px;
-  font-weight: 700;
+.share-link {
+  display: inline-block;
+  padding: 12px 28px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #e74c3c;
+  background: #fff5f5;
+  border: 2px solid #e74c3c;
   border-radius: 50px;
   cursor: pointer;
   font-family: inherit;
   transition: all 0.2s;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
 }
-.share-btn-line {
-  background: #06C755;
+.share-link:active {
+  background: #e74c3c;
   color: #fff;
 }
-.share-btn-line:active { background: #05a648; }
-.share-btn-copy {
-  background: #fff;
-  color: #e74c3c;
-  border: 2px solid #e74c3c;
-}
-.share-btn-copy:active { background: #fff5f5; }
 .retake-btn {
   display: block;
   width: 100%;
   max-width: 240px;
-  margin: 0 auto;
+  margin: 16px auto 0;
   padding: 12px 24px;
   font-size: 14px;
   font-weight: 600;
@@ -837,53 +775,12 @@ body {
   padding: 4px 8px;
   font-family: inherit;
 }
-/* ===== Mobile Font Size Adjustments ===== */
-@media (max-width: 480px) {
-  html { font-size: 17px; }
-  .intro h1 { font-size: 28px; }
-  .intro p { font-size: 17px; }
-  .pain-item { font-size: 15px; }
-  .question-text { font-size: 21px; }
-  .option-btn { font-size: 16px; }
-  .checkbox-btn { font-size: 15px; }
-  .result-type-name { font-size: 26px; }
-  .result-tagline { font-size: 17px; }
-  .result-desc { font-size: 16px; line-height: 2; }
-  .result-desc p { margin-bottom: 14px; }
-  .suggestions-title { font-size: 17px; }
-  .suggestion-item { font-size: 15px; }
-  .science-text { font-size: 15px; }
-  .cta-title { font-size: 16px; }
-  .cta-desc { font-size: 14px; }
-  .share-card-type { font-size: 24px; }
-  .share-card-tagline { font-size: 15px; }
-  .share-card-stat { font-size: 14px; }
-  .share-card-stat span { font-size: 22px; }
-  .share-hook { font-size: 18px; }
-  .share-sub { font-size: 15px; }
-  .share-btn { font-size: 15px; }
-  .science-page-title { font-size: 24px; }
-  .science-page-subtitle { font-size: 16px; }
-  .science-block-title { font-size: 18px; }
-  .science-block-text { font-size: 16px; }
-  .science-highlight { font-size: 16px; }
-  .science-cta-title { font-size: 22px; }
-  .science-cta-desc { font-size: 15px; }
-}
-
-/* Save image button */
-.share-btn-save {
-  background: #fff;
-  color: #3498db;
-  border: 2px solid #3498db;
-}
-.share-btn-save:active { background: #f0f9ff; }
 </style>
 </head>
 <body>
 <div id="root"></div>
 <script type="text/babel">
-const { useState, useCallback, useMemo, useEffect, useRef } = React;
+const { useState, useCallback, useMemo, useEffect } = React;
 
 // ===== HIGHLIGHT PARSER =====
 // ==text== → yellow highlight (key insight)
@@ -945,9 +842,7 @@ const TYPES = {
       '你已經證明自己夠拼了，不需要用「瘦」來再證明一次。=+先照顧好自己的能量，其他才跟得上+=。',
       '與其硬擠出一小時健身，不如=+讓自己每天走路 15 分鐘+=。你的身體比你想得更需要「慢下來」。'
     ],
-    science: '根據代謝研究，=!長期壓力會讓皮質醇持續偏高，直接降低胰島素敏感度!=。你的身體不是不想瘦，是==壓力荷爾蒙在命令它「先存起來」==。',
-    sharePercent: 22,
-    shareQuip: '身邊是不是有人忙到連吃飯都像在趕進度？傳給他測測看'
+    science: '根據代謝研究，=!長期壓力會讓皮質醇持續偏高，直接降低胰島素敏感度!=。你的身體不是不想瘦，是==壓力荷爾蒙在命令它「先存起來」==。'
   },
   burnout: {
     id: 'burnout',
@@ -976,9 +871,7 @@ const TYPES = {
       '你不需要等「忙完了」才開始在乎自己。因為你知道，==忙永遠不會結束==。',
       '你每天走的步數其實不少，只是都在廚房和客廳之間。=+偶爾走出去，為自己走一段+=。'
     ],
-    science: '研究顯示，=!睡眠不足會讓飢餓素上升、瘦體素下降!=。你的身體不是貪吃，是==荷爾蒙在混亂中發出錯誤訊號==。',
-    sharePercent: 28,
-    shareQuip: '你身邊有沒有那種把所有人照顧好、就是忘了自己的人？傳給他'
+    science: '研究顯示，=!睡眠不足會讓飢餓素上升、瘦體素下降!=。你的身體不是貪吃，是==荷爾蒙在混亂中發出錯誤訊號==。'
   },
   rollerCoaster: {
     id: 'rollerCoaster',
@@ -1007,9 +900,7 @@ const TYPES = {
       '你不是愛吃甜食，是你的身體一直在發出==「我血糖不夠了」的假訊號==。=+穩住三餐，假訊號就會安靜下來+=。',
       '比起計算今天吃了多少卡路里，不如注意你==吃東西的「順序」==。=+先菜、再肉、最後飯+=——這比少吃有用得多。'
     ],
-    science: '==胰島素是你身體的「交通警察」==。當血糖暴衝，胰島素就得緊急加班，=!過度反應的結果就是：血糖急降 → 你又餓了!=。這個循環不靠意志力打破，靠的是=+穩定血糖+=。',
-    sharePercent: 31,
-    shareQuip: '你朋友是不是下午三點一定要來杯手搖飲？傳給他測測'
+    science: '==胰島素是你身體的「交通警察」==。當血糖暴衝，胰島素就得緊急加班，=!過度反應的結果就是：血糖急降 → 你又餓了!=。這個循環不靠意志力打破，靠的是=+穩定血糖+=。'
   },
   powerSave: {
     id: 'powerSave',
@@ -1038,9 +929,7 @@ const TYPES = {
       '不要再拿自己跟「以前的自己」比了。你的身體經歷過那麼多次減肥，=+它需要時間修復，而不是再一次挨餓+=。',
       '吃飯不是敵人，=!飢餓才是!=。=+讓自己每餐都吃到「不餓」+=，就是重新啟動代謝最簡單的方法。'
     ],
-    science: '代謝科學發現，=!長期低熱量攝取會啟動身體的「節能機制」——代謝率下降，每一口食物都被高效率儲存!=。解法不是吃更少，而是=+重新啟動代謝引擎+=。',
-    sharePercent: 12,
-    shareQuip: '你身邊有人怎麼減都瘦不下來嗎？也許不是他不夠努力。傳給他'
+    science: '代謝科學發現，=!長期低熱量攝取會啟動身體的「節能機制」——代謝率下降，每一口食物都被高效率儲存!=。解法不是吃更少，而是=+重新啟動代謝引擎+=。'
   },
   steady: {
     id: 'steady',
@@ -1067,9 +956,7 @@ const TYPES = {
       '如果你身邊有人覺得「怎麼減都沒用」或「我已經放棄了」，提醒他：==問題可能不是不夠努力，而是方法不對==。這份測驗或許是一個好的開始。',
       '=+繼續吃你的蛋白質、走你的路、睡你的覺+=。不需要做更多，不需要買什麼補品。你已經在對的軌道上了。'
     ],
-    science: null,
-    sharePercent: 7,
-    shareQuip: '你是少數代謝穩定的人！但你朋友不一定這麼幸運。傳給他測測'
+    science: null
   }
 };
 
@@ -1651,7 +1538,7 @@ function QuestionPage({ question, questionIdx, total, onAnswer, onBack }) {
                 </div>
               </div>
             ))}
-            <div style={{ marginTop: 12 }}>
+            <div className="q7-none-option">
               <button
                 className={`checkbox-btn ${q7NoneSelected ? 'selected' : ''}`}
                 onClick={handleQ7None}
@@ -1776,28 +1663,6 @@ function ResultPage({ result, onRestart, onShowScience }) {
   const type = TYPES[result.primary];
   const secondaryType = result.secondary ? TYPES[result.secondary] : null;
   const isMixed = !!result.secondary;
-  const shareCardRef = useRef(null);
-  const [saving, setSaving] = useState(false);
-  const [cardImageUrl, setCardImageUrl] = useState(null);
-
-  const handleSaveCard = async () => {
-    if (!shareCardRef.current || saving) return;
-    setSaving(true);
-    try {
-      const canvas = await html2canvas(shareCardRef.current, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: null,
-      });
-      const dataUrl = canvas.toDataURL('image/png');
-      // Mobile: show image inline for long-press save
-      // Desktop: also show inline (more reliable than <a download>)
-      setCardImageUrl(dataUrl);
-    } catch (e) {
-      console.error('Save failed:', e);
-    }
-    setSaving(false);
-  };
 
   // Random description
   const desc = useMemo(() => {
@@ -1899,65 +1764,12 @@ function ResultPage({ result, onRestart, onShowScience }) {
         </div>
       </div>
 
-      {/* Share Card & Retake */}
+      {/* Share & Retake */}
       <div className="share-section">
-        {/* Visual Type Card */}
-        {cardImageUrl ? (
-          <div style={{ marginBottom: 20 }}>
-            <img
-              src={cardImageUrl}
-              alt={`${type.name} 代謝類型卡`}
-              style={{ width: '100%', borderRadius: 20, display: 'block' }}
-            />
-            <div style={{ fontSize: 13, color: '#636e72', marginTop: 10, lineHeight: 1.6 }}>
-              👆 長按圖片即可儲存到手機相簿
-            </div>
-            <button
-              style={{ marginTop: 10, background: 'none', border: 'none', color: '#3498db', fontSize: 14, cursor: 'pointer', fontFamily: 'inherit', textDecoration: 'underline' }}
-              onClick={() => setCardImageUrl(null)}
-            >
-              返回原始卡片
-            </button>
-          </div>
-        ) : (
-          <div ref={shareCardRef} className="share-card" style={{ background: type.gradient, color: '#fff' }}>
-            <img className="share-card-img" src={type.image} alt={type.name} />
-            <div className="share-card-type">
-              {isMixed ? `${type.name} × ${secondaryType.name}` : type.name}
-            </div>
-            <div className="share-card-tagline">{type.tagline}</div>
-            <div className="share-card-stat">
-              測驗者中只有 <span>{type.sharePercent}%</span> 是這個類型
-            </div>
-            <div className="share-card-footer">🔥 你是哪種代謝類型？30 秒測出來</div>
-          </div>
-        )}
-
-        {/* Share Hook */}
-        <div className="share-hook">朋友測完都說：也太準了吧</div>
-        <div className="share-sub">{type.shareQuip}</div>
-
-        {/* Share Buttons */}
-        <div className="share-buttons">
-          <button className="share-btn share-btn-line" onClick={() => {
-            const url = window.location.href.split('?')[0];
-            const text = `我測出來是「${type.name}」代謝！你是哪一種？30 秒就能測 👉 ${url}`;
-            window.open('https://social-plugins.line.me/lineit/share?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(text), '_blank');
-          }}>
-            💬 分享到 LINE
-          </button>
-          <button className="share-btn share-btn-copy" onClick={handleCopyLink}>
-            📋 複製連結
-          </button>
-        </div>
-        {!cardImageUrl && (
-          <div className="share-buttons">
-            <button className="share-btn share-btn-save" onClick={handleSaveCard} disabled={saving}>
-              {saving ? '⏳ 存檔中...' : '💾 儲存圖片'}
-            </button>
-          </div>
-        )}
-
+        <div className="share-text">你身邊也有人整天喊累嗎？<br/>傳給他測測看</div>
+        <button className="share-link" onClick={handleCopyLink}>
+          📋 複製連結傳給朋友
+        </button>
         <button className="retake-btn" onClick={onRestart}>
           🔄 再做一次測驗
         </button>
