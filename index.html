@@ -538,6 +538,36 @@ body {
   line-height: 1.8;
   color: #2d3436;
 }
+.q7-symptom-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 12px 0;
+}
+.q7-symptom-item {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #2d3436;
+  padding: 4px 0 4px 20px;
+  position: relative;
+}
+.q7-symptom-item::before {
+  content: '⚡';
+  position: absolute;
+  left: 0;
+  font-size: 12px;
+}
+.q7-symptom-summary {
+  font-size: 14px;
+  line-height: 1.8;
+  color: #636e72;
+  margin: 4px 0 0 0;
+}
+.body-signal-divider {
+  border: none;
+  border-top: 1px dashed #e67e22;
+  opacity: 0.3;
+  margin: 12px 0;
+}
 
 /* CTA */
 .cta-section { margin-bottom: 28px; }
@@ -1365,6 +1395,8 @@ function calculateResult(answers) {
 
   // Separate body signal answers (Q11, Q12) from scoring answers
   const bodySignalAnswers = [];
+  // Collect Q7 selected symptom texts
+  let q7Symptoms = [];
 
   answers.forEach((answer, idx) => {
     const question = QUESTIONS[idx];
@@ -1375,9 +1407,11 @@ function calculateResult(answers) {
       return;
     }
     if (idx === 6) {
-      // Q7 multiselect
-      if (answer && answer.length > 0) {
-        answer.forEach(scoreObj => {
+      // Q7 multiselect — answer is { scores: [...], texts: [...] }
+      const q7scores = answer && answer.scores ? answer.scores : (Array.isArray(answer) ? answer : []);
+      q7Symptoms = answer && answer.texts ? answer.texts : [];
+      if (q7scores.length > 0) {
+        q7scores.forEach(scoreObj => {
           Object.entries(scoreObj).forEach(([type, val]) => {
             scores[type] += val;
           });
@@ -1399,19 +1433,19 @@ function calculateResult(answers) {
 
   // Steady check
   if (firstType === 'steady' && firstScore >= 6) {
-    return { primary: 'steady', secondary: null, scores, bodySignal };
+    return { primary: 'steady', secondary: null, scores, bodySignal, q7Symptoms };
   }
   const nonSteady = sorted.filter(([t]) => t !== 'steady');
   if (nonSteady.every(([, s]) => s <= 2)) {
-    return { primary: 'steady', secondary: null, scores, bodySignal };
+    return { primary: 'steady', secondary: null, scores, bodySignal, q7Symptoms };
   }
 
   // Mixed type check
   if (firstScore - secondScore <= 1 && firstType !== 'steady' && secondType !== 'steady') {
-    return { primary: firstType, secondary: secondType, scores, bodySignal };
+    return { primary: firstType, secondary: secondType, scores, bodySignal, q7Symptoms };
   }
 
-  return { primary: firstType, secondary: null, scores, bodySignal };
+  return { primary: firstType, secondary: null, scores, bodySignal, q7Symptoms };
 }
 
 
@@ -1534,18 +1568,20 @@ function QuestionPage({ question, questionIdx, total, onAnswer, onBack }) {
 
   const handleQ7Submit = () => {
     if (q7NoneSelected) {
-      onAnswer([question.noneOption.scores]);
+      onAnswer({ scores: [question.noneOption.scores], texts: [] });
     } else {
-      // Collect scores from all selected items
+      // Collect scores AND texts from all selected items
       const selectedScores = [];
+      const selectedTexts = [];
       question.sections.forEach((section, si) => {
         section.options.forEach((opt, oi) => {
           if (q7Selected[`${si}-${oi}`]) {
             selectedScores.push(opt.scores);
+            selectedTexts.push(opt.text);
           }
         });
       });
-      onAnswer(selectedScores.length > 0 ? selectedScores : []);
+      onAnswer({ scores: selectedScores.length > 0 ? selectedScores : [], texts: selectedTexts });
     }
   };
 
@@ -1801,13 +1837,26 @@ function ResultPage({ result, onRestart, onShowScience }) {
           ))}
         </div>
 
-        {/* Body Signal Resonance — only when bodySignal is fluctuating */}
-        {result.bodySignal === 'fluctuating' && BODY_SIGNAL_TEXT[result.primary] && (
+        {/* Body Signal Section — Q7 symptoms and/or Q11/Q12 trend, layered independently */}
+        {((result.q7Symptoms && result.q7Symptoms.length > 0) || (result.bodySignal === 'fluctuating' && BODY_SIGNAL_TEXT[result.primary])) && (
           <div className="body-signal-section">
             <div className="body-signal-title">📊 你的身體在說話</div>
-            <div className="body-signal-text">
-              {BODY_SIGNAL_TEXT[result.primary].split('\n\n').map((p, i) => <p key={i}>{parseHL(p)}</p>)}
-            </div>
+            {result.q7Symptoms && result.q7Symptoms.length > 0 && (
+              <div>
+                <ul className="q7-symptom-list">
+                  {result.q7Symptoms.map((s, i) => <li key={i} className="q7-symptom-item">{s}</li>)}
+                </ul>
+                <p className="q7-symptom-summary">這些都是你的身體在反映目前的代謝狀態。</p>
+              </div>
+            )}
+            {result.q7Symptoms && result.q7Symptoms.length > 0 && result.bodySignal === 'fluctuating' && BODY_SIGNAL_TEXT[result.primary] && (
+              <hr className="body-signal-divider" />
+            )}
+            {result.bodySignal === 'fluctuating' && BODY_SIGNAL_TEXT[result.primary] && (
+              <div className="body-signal-text">
+                {BODY_SIGNAL_TEXT[result.primary].split('\n\n').map((p, i) => <p key={i}>{parseHL(p)}</p>)}
+              </div>
+            )}
           </div>
         )}
 
