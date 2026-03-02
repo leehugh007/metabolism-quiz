@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>從囤貨模式切換到燃燒模式——3 個你今天就能做的改變</title>
+<meta property="og:title" content="從囤貨模式切換到燃燒模式——3 個你今天就能做的改變">
+<meta property="og:description" content="不用算熱量、不用挨餓，3 個簡單的飲食調整，讓你的身體開始燃燒脂肪">
+<meta property="og:type" content="website">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  background: #f8f9fa;
+  color: #2d3436;
+  line-height: 1.8;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.page {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: #fff;
+}
+
+/* Hero */
+.hero {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  color: #fff;
+  padding: 48px 24px 40px;
+  text-align: center;
+}
+.hero-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #ff6b6b, #ffa502);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+}
+.hero h1 {
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+.hero h1 em {
+  font-style: normal;
+  color: #ffa502;
+}
+.hero p {
+  font-size: 15px;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.7;
+}
+
+/* Content */
+.content {
+  padding: 32px 24px;
+}
+.intro-text {
+  font-size: 16px;
+  line-height: 1.9;
+  color: #444;
+  margin-bottom: 32px;
+}
+.intro-text strong {
+  color: #2d3436;
+}
+
+/* Method Cards */
+.method-card {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 16px;
+  padding: 28px 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+.method-number {
+  display: inline-block;
+  background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+  text-align: center;
+  border-radius: 50%;
+  margin-bottom: 12px;
+}
+.method-card h2 {
+  font-size: 19px;
+  font-weight: 700;
+  color: #2d3436;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+.method-card p {
+  font-size: 15px;
+  line-height: 1.9;
+  color: #555;
+  margin-bottom: 14px;
+}
+.method-card p:last-child {
+  margin-bottom: 0;
+}
+
+.action-box {
+  background: #fff8f0;
+  border-left: 3px solid #ffa502;
+  padding: 14px 16px;
+  border-radius: 0 8px 8px 0;
+  margin-top: 16px;
+}
+.action-box .action-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #ffa502;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+.action-box p {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 0;
+}
+
+/* Transition */
+.transition {
+  padding: 32px 24px;
+  background: #f8f9fa;
+}
+.transition p {
+  font-size: 15px;
+  line-height: 1.9;
+  color: #555;
+  margin-bottom: 14px;
+}
+.transition p:last-child {
+  margin-bottom: 0;
+}
+.transition strong {
+  color: #2d3436;
+}
+.highlight-question {
+  font-size: 18px;
+  font-weight: 700;
+  color: #e74c3c;
+  text-align: center;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #ddd;
+}
+
+/* CTA Section */
+.cta-section {
+  padding: 32px 24px 20px;
+  text-align: center;
+}
+.cta-card {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border-radius: 16px;
+  padding: 32px 24px;
+  margin-bottom: 16px;
+}
+.cta-card h3 {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+.cta-card p {
+  color: rgba(255,255,255,0.75);
+  font-size: 14px;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+.cta-btn {
+  display: block;
+  width: 100%;
+  padding: 16px 24px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.cta-btn:active {
+  transform: scale(0.98);
+}
+.cta-btn-primary {
+  background: linear-gradient(135deg, #ffa502, #ff6b6b);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(255,107,107,0.3);
+}
+.cta-btn-secondary {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.25);
+  margin-top: 12px;
+}
+
+/* Footer */
+.footer {
+  padding: 32px 24px 48px;
+  text-align: center;
+}
+.footer p {
+  font-size: 15px;
+  line-height: 1.9;
+  color: #888;
+  margin-bottom: 8px;
+}
+.footer .signature {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2d3436;
+  margin-top: 16px;
+}
+
+/* Emphasis */
+.text-orange { color: #ffa502; font-weight: 600; }
+.text-red { color: #e74c3c; font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-badge">一休｜瘦身方法</div>
+    <h1>從<em>「囤貨模式」</em>切換到<em>「燃燒模式」</em></h1>
+    <p>不用算熱量、不用挨餓<br>3 個你今天就能做的改變</p>
+  </div>
+
+  <!-- Intro -->
+  <div class="content">
+    <div class="intro-text">
+      <p>你剛看完的那篇文章告訴你：<strong>瘦不下來不是你不夠努力，是荷爾蒙在搞鬼。</strong></p>
+      <p style="margin-top:12px;">那接下來呢？到底要怎麼做？</p>
+      <p style="margin-top:12px;">下面這 3 個方法，不需要算熱量、不需要秤食物、不需要買任何東西。你看完之後，下一餐就可以開始。</p>
+    </div>
+
+    <!-- Method 1 -->
+    <div class="method-card">
+      <div class="method-number">1</div>
+      <h2>改變「吃的順序」<br>不是吃的數量</h2>
+      <p>你不需要少吃。你只需要在每一餐做一件事：<span class="text-orange">先吃蔬菜，再吃蛋白質，最後才碰澱粉。</span></p>
+      <p>記住一個原則：<span class="text-red">第一口，不要吃進碳水。</span></p>
+      <p>為什麼這麼簡單的事有用？</p>
+      <p>因為進食順序會直接影響你的血糖反應。先吃蔬菜的纖維，再吃蛋白質，等於在胃裡先鋪一層「緩衝墊」，後面吃進去的澱粉消化速度會變慢，血糖不會暴衝，胰島素就不會過度分泌。</p>
+      <p>胰島素一旦不暴衝，你的身體就比較不會進入「囤貨模式」。</p>
+      <div class="action-box">
+        <div class="action-label">今天就能做</div>
+        <p>下一餐，先吃菜、再吃肉、飯最後吃。第一口一定是蔬菜，不是白飯。</p>
+      </div>
+    </div>
+
+    <!-- Method 2 -->
+    <div class="method-card">
+      <div class="method-number">2</div>
+      <h2>把「液態糖」<br>從生活裡拿掉</h2>
+      <p>如果你只能改一個習慣，改這個。</p>
+      <p>含糖飲料是最強的胰島素刺激源之一。液體消化速度極快，糖直接灌進血液，胰島素瞬間飆高。</p>
+      <p>你可能覺得「我喝的是微糖、半糖」。但問題不在甜不甜，在於<span class="text-red">糖進入血液的速度</span>。液態的糖，速度最快。</p>
+      <div class="action-box">
+        <div class="action-label">今天就能做</div>
+        <p>把含糖飲料換成無糖茶、黑咖啡、或水。一天一杯手搖的話，先改成三天一杯就好，不需要一步到位。</p>
+      </div>
+    </div>
+
+    <!-- Method 3 -->
+    <div class="method-card">
+      <div class="method-number">3</div>
+      <h2>不要怕吃脂肪</h2>
+      <p>很多人減肥第一件事就是戒油。低脂牛奶、水煮雞胸、燙青菜。</p>
+      <p>但脂肪其實是讓你「不會餓」的關鍵。</p>
+      <p>脂肪幾乎不刺激胰島素，消化速度慢，吃了之後你會撐很久。當你不容易餓，就不會一直想吃東西，胰島素就有時間回到低點，身體才有機會切換到<span class="text-orange">「燃燒模式」</span>。</p>
+      <p>怕的不應該是脂肪，而是「脂肪＋精緻碳水」的組合——薯條、蛋糕、炸雞配可樂。單獨的好脂肪（橄欖油、酪梨、堅果、魚油）反而是你的隊友。</p>
+      <div class="action-box">
+        <div class="action-label">今天就能做</div>
+        <p>煮菜不要怕放油。吃沙拉選橄欖油醋醬，不選低脂醬。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Transition -->
+  <div class="transition">
+    <p>這三個方法，大部分人做了都會有感覺。</p>
+    <p>但我也要老實跟你說：<strong>每個人的狀況不一樣。</strong></p>
+    <p>有些人胰島素敏感度還不錯，只是吃錯了東西。調整飲食內容，一兩週就有感。</p>
+    <p>有些人已經長期處於代謝受損的狀態——胰島素阻抗比較嚴重、壓力荷爾蒙偏高、怎麼調整都卡住。這種情況光靠飲食可能不夠，需要更系統性的方法。</p>
+    <p class="highlight-question">你的身體現在是哪種狀態？</p>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <div class="cta-card">
+      <h3>30 秒測出你的代謝類型</h3>
+      <p>10 個生活問題，幫你判斷你的身體現在是「高轉速型」、「省電模式型」、還是「雲霄飛車型」。<br><br>知道你是哪一型，才知道該從哪裡開始調整。</p>
+      <a href="https://metabolism-quiz.vercel.app/" target="_blank" rel="noopener" class="cta-btn cta-btn-primary">免費測驗 → 你是哪種代謝類型？</a>
+      <a href="https://lin.ee/x41s2Su" target="_blank" rel="noopener" class="cta-btn cta-btn-secondary">了解 ABC 代謝瘦身法（LINE 諮詢）→</a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>記住，瘦不下來不是你不夠努力。</p>
+    <p>是你的身體需要不同的對待方式。</p>
+    <p>從今天開始，不要再問「我吃了多少」，<br>先問「我吃了什麼」。</p>
+    <p class="signature">我是一休，陪你健康的瘦一輩子。</p>
+  </div>
+
+</div>
+</body>
+</html>
