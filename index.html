@@ -1846,7 +1846,7 @@ function ResultPage({ result, onRestart, onShowScience }) {
                 <ul className="q7-symptom-list">
                   {result.q7Symptoms.map((s, i) => <li key={i} className="q7-symptom-item">{s}</li>)}
                 </ul>
-                <p className="q7-symptom-summary">這些都是你的身體在反映目前的代謝狀態。</p>
+                <p className="q7-symptom-summary">這些都是你的身體在反映目前的代謝狀態——可能正處於慢性發炎中。</p>
               </div>
             )}
             {result.q7Symptoms && result.q7Symptoms.length > 0 && result.bodySignal === 'fluctuating' && BODY_SIGNAL_TEXT[result.primary] && (
