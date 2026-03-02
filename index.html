@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>你是哪種代謝類型？30 秒測出來</title>
 <meta property="og:title" content="高轉速、省電模式、雲霄飛車——你是哪種代謝類型？30 秒測出來">
-<meta property="og:description" content="10 個生活小問題，測出你的身體正在用哪種模式運轉">
+<meta property="og:description" content="12 個生活小問題，測出你的身體正在用哪種模式運轉">
 <meta property="og:type" content="website">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
@@ -519,6 +519,26 @@ body {
   color: #2d3436;
 }
 
+/* Body Signal Section */
+.body-signal-section {
+  background: #fff8f0;
+  border-left: 4px solid #e67e22;
+  border-radius: 0 12px 12px 0;
+  padding: 16px 20px;
+  margin-bottom: 28px;
+}
+.body-signal-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #e67e22;
+  margin-bottom: 8px;
+}
+.body-signal-text {
+  font-size: 14px;
+  line-height: 1.8;
+  color: #2d3436;
+}
+
 /* CTA */
 .cta-section { margin-bottom: 28px; }
 .cta-card {
@@ -960,6 +980,16 @@ const TYPES = {
   }
 };
 
+// ===== BODY SIGNAL RESONANCE TEXT =====
+// Shown on result page when bodySignal = 'fluctuating'
+const BODY_SIGNAL_TEXT = {
+  highRPM: '而且你的身體已經在反映了——褲子變緊、體重往上，這不是你不夠自律，是=!壓力荷爾蒙一直在命令身體「存起來」!=。你的代謝引擎需要的不是更拼，而是=+一次真正的重新校準+=。',
+  burnout: '而且你的身體也在喊了——腰圍在變、體重在爬，你不是沒注意到，只是忙到沒辦法處理。=!這些都是身體在告訴你：它已經撐到極限了!=。你值得一套=+不用多花時間、但能讓身體慢慢回來的方法+=。',
+  rollerCoaster: '而且你的身體正在反映這個循環——體重起伏、褲子時緊時鬆，就像你的血糖一樣在坐雲霄飛車。=!這不是你管不住嘴，是身體一直在發出錯誤的飢餓訊號!=。好消息是，只要=+穩住血糖，這些波動就會跟著穩下來+=。',
+  powerSave: '而且你可能發現，就算吃這麼少，體重還是慢慢在爬、褲子還是越來越緊。=!這就是省電模式最殘酷的地方——你越努力少吃，身體越努力幫你存!=。你需要的不是再一次節食，而是=+讓身體解除警報，重新開機+=。',
+  steady: '不過你可能也感覺到了——最近褲子好像有點緊、或者體重開始有些起伏。你的生活習慣跟心態都很不錯，但==身體好像還沒有完全跟上你的努力==。\n\n這不是你的問題。有時候代謝需要的不只是好習慣，而是=+更精準的重建方式+=，幫身體走完最後一哩路。'
+};
+
 // ===== SCIENCE PAGE CONTENT =====
 
 const SCIENCE_CONTENT = {
@@ -1297,6 +1327,28 @@ const QUESTIONS = [
       { key: 'D', text: '不要再越減越胖了' },
       { key: 'E', text: '目前還好，就是想了解一下自己的狀態' },
     ]
+  },
+  {
+    id: 11,
+    type: 'bodySignal',
+    text: '最近半年，你的褲子或裙子⋯',
+    options: [
+      { key: 'A', text: '明顯變緊了，甚至有幾件穿不下', signal: 'fluctuating' },
+      { key: 'B', text: '好像有點緊，但說不上來', signal: 'fluctuating' },
+      { key: 'C', text: '差不多，沒什麼變化', signal: 'stable' },
+      { key: 'D', text: '有鬆一點，身體感覺比較輕盈', signal: 'stable' },
+    ]
+  },
+  {
+    id: 12,
+    type: 'bodySignal',
+    text: '回想過去這一年，你的體重大方向是？',
+    options: [
+      { key: 'A', text: '慢慢往上，不太控制得住', signal: 'fluctuating' },
+      { key: 'B', text: '反反覆覆，瘦了又回來', signal: 'fluctuating' },
+      { key: 'C', text: '大致持平，沒什麼大變化', signal: 'stable' },
+      { key: 'D', text: '穩定在往下，或一直維持在理想範圍', signal: 'stable' },
+    ]
   }
 ];
 
@@ -1311,7 +1363,17 @@ function getRandomItems(arr, n) {
 function calculateResult(answers) {
   const scores = { highRPM: 0, burnout: 0, rollerCoaster: 0, powerSave: 0, steady: 0 };
 
+  // Separate body signal answers (Q11, Q12) from scoring answers
+  const bodySignalAnswers = [];
+
   answers.forEach((answer, idx) => {
+    const question = QUESTIONS[idx];
+    if (question && question.type === 'bodySignal') {
+      // Body signal questions don't affect type scoring
+      const selectedOpt = question.options.find(o => o.key === answer);
+      if (selectedOpt) bodySignalAnswers.push(selectedOpt.signal);
+      return;
+    }
     if (idx === 6) {
       // Q7 multiselect
       if (answer && answer.length > 0) {
@@ -1327,6 +1389,9 @@ function calculateResult(answers) {
     }
   });
 
+  // Determine body signal: any "fluctuating" = body is fluctuating
+  const bodySignal = bodySignalAnswers.includes('fluctuating') ? 'fluctuating' : 'stable';
+
   // Find top types
   const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
   const [firstType, firstScore] = sorted[0];
@@ -1334,19 +1399,19 @@ function calculateResult(answers) {
 
   // Steady check
   if (firstType === 'steady' && firstScore >= 6) {
-    return { primary: 'steady', secondary: null, scores };
+    return { primary: 'steady', secondary: null, scores, bodySignal };
   }
   const nonSteady = sorted.filter(([t]) => t !== 'steady');
   if (nonSteady.every(([, s]) => s <= 2)) {
-    return { primary: 'steady', secondary: null, scores };
+    return { primary: 'steady', secondary: null, scores, bodySignal };
   }
 
   // Mixed type check
   if (firstScore - secondScore <= 1 && firstType !== 'steady' && secondType !== 'steady') {
-    return { primary: firstType, secondary: secondType, scores };
+    return { primary: firstType, secondary: secondType, scores, bodySignal };
   }
 
-  return { primary: firstType, secondary: null, scores };
+  return { primary: firstType, secondary: null, scores, bodySignal };
 }
 
 
@@ -1392,7 +1457,7 @@ function IntroPage({ onStart }) {
         <span>是代謝在扯你後腿</span>
       </h1>
       <p>
-        10 個生活小問題<br/>
+        12 個生活小問題<br/>
         測出你的身體正在用哪種模式運轉
       </p>
 
@@ -1736,6 +1801,16 @@ function ResultPage({ result, onRestart, onShowScience }) {
           ))}
         </div>
 
+        {/* Body Signal Resonance — only when bodySignal is fluctuating */}
+        {result.bodySignal === 'fluctuating' && BODY_SIGNAL_TEXT[result.primary] && (
+          <div className="body-signal-section">
+            <div className="body-signal-title">📊 你的身體在說話</div>
+            <div className="body-signal-text">
+              {BODY_SIGNAL_TEXT[result.primary].split('\n\n').map((p, i) => <p key={i}>{parseHL(p)}</p>)}
+            </div>
+          </div>
+        )}
+
         {/* Science teaser */}
         {type.science && (
           <div className="science-section">
@@ -1746,15 +1821,28 @@ function ResultPage({ result, onRestart, onShowScience }) {
 
         {/* CTA — LINE 導流 + 科學解析誘因 */}
         <div className="cta-section">
-          <a className="cta-card" href="https://lin.ee/x41s2Su" target="_blank" rel="noopener" style={{ borderColor: '#2ecc71', background: '#f0fff4' }}>
-            <div className="cta-icon">🔬</div>
-            <div className="cta-title">想了解「{type.name}」的科學機制及如何調整改善？</div>
-            <div className="cta-desc">
-              加入一休的 LINE，輸入「{type.name}」四個字，<br/>
-              系統會自動傳送你的專屬科學解析頁面！
-            </div>
-            <div className="cta-arrow" style={{ color: '#27ae60' }}>加 LINE 看完整解析 →</div>
-          </a>
+          {result.primary === 'steady' && result.bodySignal === 'fluctuating' ? (
+            <a className="cta-card" href="https://lin.ee/x41s2Su" target="_blank" rel="noopener" style={{ borderColor: '#e67e22', background: '#fff8f0' }}>
+              <div className="cta-icon">🚀</div>
+              <div className="cta-title">你的習慣已經很棒了，代謝只差最後一步</div>
+              <div className="cta-desc">
+                一休的「ABC 代謝瘦身法」專為像你這樣<br/>
+                心態好、習慣穩，但身體還沒完全跟上的人設計。<br/>
+                用科學的方式，幫你的代謝走完最後一哩路。
+              </div>
+              <div className="cta-arrow" style={{ color: '#e67e22' }}>加 LINE 了解更多 →</div>
+            </a>
+          ) : (
+            <a className="cta-card" href="https://lin.ee/x41s2Su" target="_blank" rel="noopener" style={{ borderColor: '#2ecc71', background: '#f0fff4' }}>
+              <div className="cta-icon">🔬</div>
+              <div className="cta-title">想了解「{type.name}」的科學機制及如何調整改善？</div>
+              <div className="cta-desc">
+                加入一休的 LINE，輸入「{type.name}」四個字，<br/>
+                系統會自動傳送你的專屬科學解析頁面！
+              </div>
+              <div className="cta-arrow" style={{ color: '#27ae60' }}>加 LINE 看完整解析 →</div>
+            </a>
+          )}
           <a className="cta-card" href="https://lin.ee/x41s2Su" target="_blank" rel="noopener">
             <div className="cta-icon">📸</div>
             <div className="cta-title">想知道你一餐的營養夠不夠？</div>
