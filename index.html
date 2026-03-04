@@ -2010,14 +2010,17 @@ function ResultPage({ result, onRestart, onShowScience }) {
               <div className="cta-arrow" style={{ color: '#27ae60' }}>加 LINE 看完整解析 →</div>
             </a>
           )}
-          <a className="cta-card" href="https://lin.ee/7lFRdXS" target="_blank" rel="noopener" style={{ borderColor: '#3498db', background: '#f0f8ff' }}>
+          <a className="cta-card" href={`https://line.me/R/oaMessage/@097itiof/?${encodeURIComponent('#' + type.name)}`} target="_blank" rel="noopener" style={{ borderColor: '#3b82f6', background: '#f0f7ff' }}>
             <div className="cta-icon">📸</div>
-            <div className="cta-title">想知道你一餐的營養夠不夠？</div>
+            <div className="cta-title">拍照幫你算一餐的營養</div>
             <div className="cta-desc">
-              加入「幫你算」，拍餐點照片就能看營養搭配！<br/>
-              加好友後輸入「#{type.name}」，就能得到專屬你的建議。
+              免費 AI 工具，拍下你的餐點，馬上告訴你蛋白質、碳水、蔬菜的狀況。<br/>
+              點下面按鈕，自動帶入你的「{type.name}」結果，給你更精準的建議！
             </div>
-            <div className="cta-arrow" style={{ color: '#3498db' }}>加入「幫你算」拍照看營養 →</div>
+            <div className="cta-arrow" style={{ color: '#3b82f6' }}>開啟「幫你算」→</div>
+            <div style={{ fontSize: '12px', color: '#999', marginTop: '4px' }}>
+              電腦版？在 LINE 搜尋 @097itiof，輸入 #{type.name}
+            </div>
           </a>
         </div>
       </div>
